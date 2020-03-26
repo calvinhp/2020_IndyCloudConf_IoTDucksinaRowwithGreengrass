@@ -1,7 +1,7 @@
 ---
 title: IoT Ducks in a Row with Greengrass
 author: Calvin Hendryx-Parker, CTO, Six Feet Up
-date: IndyPy 2020
+date: Indy Cloud Conf 2020
 ---
 
 # Fully Managed Edge Services
@@ -10,7 +10,15 @@ date: IndyPy 2020
 -   Group Management of Cores
 -   OTA Provisioning and Updates
 
-# Lambda at Your Edge
+::: notes
+
+AWS will optionally push updates to the Core software automatically.
+
+:::
+
+# Lambda @ Your Edge
+
+![Getting Started](images/quick-start-gg-architecture.png){.stretch .plain}
 
 ::: notes
 You install the core on your devices
@@ -42,9 +50,14 @@ Processes rules and deliver messages to other devices or the cloud
 
 # Greengrass Connectors
 
-## Access to third-party APIs
+* Access to hardware for Inference or GPIO
+* Access to third-party APIs
+* On-premises Software
 
-## On-premises Software
+::: notes
+Also allows access to commond AWS services such as CloudWatch to publish metrics
+or run Docker compose on Cores to launch applications
+:::
 
 # Run ML Models
 
@@ -90,6 +103,23 @@ Bootstrap Device
 $ wget -q -O ./gg-device-setup-latest.sh https://d1onfpft10uf5o.cloudfront.net/greengrass-device-setup/downloads/gg-device-setup-latest.sh && chmod +x ./gg-device-setup-latest.sh && sudo -E ./gg-device-setup-latest.sh bootstrap-greengrass-interactive
 ```
 
+::: notes
+Make sure to create the role in IAM before you try to assume it and put your account id in the command.
+:::
+
+# Concepts
+
+* Thing
+* Core
+* Group
+
+::: notes
+Devices are Things
+Things can also be sensors or smaller devices that connect to a Core
+Core are also things, but can run the Greengrass core and recieve messages from other Things
+Devices in a group can be configured to talk to each other
+:::
+
 # Hello World
 
 ``` {.stretch .python}
@@ -112,12 +142,45 @@ def greengrass_hello_world_run():
     Timer(5, greengrass_hello_world_run).start()
 ```
 
+::: notes
+Currently, make sure you choose `python3.7` for the runtime for your lambda.
+:::
+
 # Greengrass Secrets Manager
 
-## Works with Greengrass Connectors
+### Works with Greengrass
+* Connectors
+* Lambdas
 
 ::: notes
+For example API keys to external services such as Twillio, Splunk or 3rd party APIs
+
+Greengrass Secret Resources integrates with AWS Secrets Manager
+
 Rotate keys and distribute access to other edge resources
+:::
+
+# Greengrass Security
+
+* Policies
+* Device Defender
+
+::: notes
+
+* Defend
+  * Ongoing Audits of the fleet, scheduled or on demand
+  * Device Defender Detect monitors device activity
+  * Create security profiles to define device behavior
+  * Create mitigation actions
+:::
+
+# IoT Act Rules
+
+### IFTTT for IoT on AWS
+
+::: notes
+evaluate messages coming back from your things and add actions
+Send message to AWS or 3rd Party IoT services
 :::
 
 # Greengrass Pricing
